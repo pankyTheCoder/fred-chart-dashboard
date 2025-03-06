@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, RefObject } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ChartConfig, ChartType } from '../types/Chart';
 import { searchSeries } from '../services/fredApi';
@@ -10,12 +10,16 @@ interface ChartConfigFormProps {
   initialConfig?: Partial<ChartConfig>;
   onSave: (config: Partial<ChartConfig>) => void;
   onCancel: () => void;
+  displayFooterButtons?: boolean;
+  formRef?: RefObject<HTMLFormElement | null>;
 }
 
 const ChartConfigForm = ({ 
   initialConfig = {}, 
   onSave, 
-  onCancel 
+  onCancel,
+  displayFooterButtons = true,
+  formRef
 }: ChartConfigFormProps) => {
   const [title, setTitle] = useState(initialConfig.title || '');
   const [chartType, setChartType] = useState<ChartType>(initialConfig.chartType || 'line');
@@ -46,21 +50,19 @@ const ChartConfigForm = ({
   } = useQuery({
     queryKey: ['searchSeries', debouncedQuery],
     queryFn: () => searchSeries(debouncedQuery),
-    enabled: debouncedQuery.length > 2,
+    enabled: debouncedQuery.length > 1,
   });
 
   const handleSeriesSelect = (id: string, title: string) => {
     setSeriesId(id);
     setSeriesTitle(title);
     
-    // If title is not set, use series title
     if (!title || title.trim() === '') {
       setTitle(title);
     }
   };
 
   const handleTimeFrequencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    // Type assertion to tell TypeScript that this value is always a valid TimeFrequency
     setTimeFrequency(e.target.value as TimeFrequency);
   };
 
@@ -78,14 +80,17 @@ const ChartConfigForm = ({
       ...(chartType === 'line' ? { lineStyle } : {}),
       ...(chartType === 'bar' ? { barStyle } : {}),
     };
-    
+    if(!title || !seriesId)
+      return;
     onSave(updatedConfig);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4"  ref={formRef}>
       <div>
-        <label className="block text-sm font-medium mb-1">Chart Title</label>
+        <label className="block text-sm font-medium mb-1">
+          Chart Title <span className="text-red-500">*</span>
+        </label>
         <input
           type="text"
           value={title}
@@ -108,7 +113,9 @@ const ChartConfigForm = ({
       </div>
       
       <div>
-        <label className="block text-sm font-medium mb-1">Data Series</label>
+        <label className="block text-sm font-medium mb-1">
+          Data Series <span className="text-red-500">*</span>
+        </label>
         <div className="space-y-2">
           <input
             type="text"
@@ -222,14 +229,16 @@ const ChartConfigForm = ({
         </div>
       )}
       
-      <div className="flex space-x-2 pt-2">
-        <Button type="submit" variant="default">
-          Save Chart
-        </Button>
-        <Button type="button" variant="outline" onClick={onCancel}>
-          Cancel
-        </Button>
-      </div>
+      {displayFooterButtons && (
+        <div className="flex justify-end space-x-2 pt-4">
+          <Button type="button" variant="outline" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled={!title || !seriesId}>
+            Save Chart
+          </Button>
+        </div>
+      )}
     </form>
   );
 };

@@ -1,54 +1,108 @@
-# React + TypeScript + Vite
+# FRED Chart Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+FRED Chart Dashboard is a web application built using **React**, **Vite**, and **Tailwind CSS**. It allows users to search for economic data series, visualize them as charts, and customize chart parameters.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- Search for economic data series using FRED API
+- Select and visualize data in various chart formats
+- Customize chart attributes such as color, labels, and time frequency
+- Save and manage created charts
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **React** (Vite as the build tool)
+- **TypeScript**
+- **Tailwind CSS**
+- **React Query** for data fetching
+- **Radix UI** for components
+- **ESLint** for code linting
+
+## Installation
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- **Node.js** (Latest LTS version recommended)
+- **npm** or **yarn**
+
+### Setup
+
+1. Clone the repository:
+
+   ```sh
+   git clone <repository-url>
+   cd fred-chart-dashboard
+   ```
+
+2. Install dependencies:
+
+   ```sh
+   npm install
+   ```
+
+   or using yarn:
+
+   ```sh
+   yarn install
+   ```
+
+3. Start the development server:
+
+   ```sh
+   npm run dev
+   ```
+
+   The application will be available at `http://localhost:5173/` (default Vite port).
+
+## Build & Deployment
+
+To create a production build, run:
+
+```sh
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+This generates the optimized static files in the `dist/` folder.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+To preview the production build locally:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```sh
+npm run preview
 ```
+
+## Docker Setup
+
+To containerize the application using Docker:
+
+1. Build the Docker image:
+
+   ```sh
+   docker build -t fred-chart-dashboard .
+   ```
+
+2. Run the container:
+
+   ```sh
+   docker run -p 3000:3000 fred-chart-dashboard
+   ```
+
+## CI/CD Pipeline
+
+A GitHub Actions workflow can be used to automate builds, tests, and deployments. Refer to `.github/workflows/ci-cd.yml` for pipeline details.
+
+## Contributing
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes and commit (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature-branch`).
+5. Open a Pull Request.
+
+## License
+
+This project is licensed under the MIT License.
+
