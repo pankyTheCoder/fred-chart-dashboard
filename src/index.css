@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@plugin 'tailwindcss-animate';
+ 
+@custom-variant dark (&:is(.dark *));
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply text-gray-900;
+  }
+  
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+}
